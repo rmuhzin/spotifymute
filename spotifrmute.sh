@@ -9,14 +9,13 @@ echo ""
 echo "----------------------------------------------------------"
 
 
-WMTITLE="Spotify Free - Linux Preview"
+WMTITLE="Spotify"
 
 
-xprop -spy -name "$WMTITLE" WM_ICON_NAME |
+xprop -spy -name "$WMTITLE" WM_NAME |
 while read -r XPROPOUTPUT; do
         XPROP_TRACKDATA="$(echo "$XPROPOUTPUT" | cut -d \" -f 2 )"
-        DBUS_TRACKDATA="$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify / \
-        org.freedesktop.MediaPlayer2.GetMetadata | grep xesam:title -A 1 | grep variant | cut -d \" -f 2)"
+        DBUS_TRACKDATA="$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata' | grep xesam:title -A 1 | grep variant | cut -d \" -f 2)"
 
         # show something
         echo "XPROP:   $XPROP_TRACKDATA"
